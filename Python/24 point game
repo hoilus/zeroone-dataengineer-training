@@ -1,0 +1,61 @@
+import numpy as np
+import itertools
+
+# define input numbers
+def input_nums():
+    inputs = list(map(int,[i for i in input("please input 4 digit integers > ").split(' ')]))
+    while (len(inputs) > 4) or (max(inputs) > 13) or (min(inputs) < 1):
+        print('Oops! Wrong inputs. Please reinput 4 digit integers for a 24 Card game.')
+        inputs = list(map(int,[i for i in input("please input 4 digit integers > ").split(' ')]))
+    return inputs
+
+# define available operations
+def operations():
+#    ops = ['+', '-', '*', '/', '(', ')']
+    ops = ['+', '-', '*', '/']
+    return ops
+
+# search the proper operations for the four input digits
+def organize(nums, ops):
+    lennums = len(nums)
+    lenops = len(ops)
+    result_list = []
+    operation_list = []
+    for i in range(lenops):
+        for j in range(lenops):
+            for k in range(lenops):
+                new_str = str(nums[0])+ops[i]+str(nums[1])+ops[j]+str(nums[2])+ops[k]+str(nums[3])
+                result_list.append(eval(new_str))
+                operation_list.append(new_str)
+    return result_list, operation_list
+
+#####################################################
+# main execution code    
+nums = input_nums()
+ops = operations()
+print('available operations for this game: ', ops)
+# all combinations of the input 4 digits
+# This is a tuple list
+nums_all_com = list(itertools.permutations(nums))
+# search all possible existence of operations
+results = []
+for i in range(len(nums_all_com)):
+    nums = list(nums_all_com[i])
+    all_results, operation_list = organize(nums, ops)
+    results_arr = np.asarray(all_results)
+    operation_arr = np.asarray(operation_list)
+    results_mask = results_arr[:]==24
+    mask_index = np.where(results_mask) 
+    if sum(results_mask) != 0:
+        for j in operation_arr[mask_index].tolist():
+            results.append(j)
+# print out 
+if len(results) != 0:
+    print('OK! Done! These 4 digits win!')
+    print('There are total %d operations. They are: ' %(len(results)))
+    for i in results:
+        print(i)
+else:
+    print('Sorry! It is impossible to get 24 by these 4 digits!')
+# end of main execution code
+####################################################
