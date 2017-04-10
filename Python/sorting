@@ -1,0 +1,29 @@
+# sort a list with a great amount of data
+# time complexity nlog(n)
+import numpy as np
+
+def bisection(listdata,inval,pos):
+    n = len(listdata)
+    if n == 1:
+        if inval > listdata[0]:
+            return pos+1 #listdata.append(inval)
+        else:
+            return pos #listdata.insert(0,inval)
+    else:
+        if inval < listdata[n//2]:
+            return bisection(listdata[0:n//2],inval,pos)
+        elif inval > listdata[n//2]:
+            return bisection(listdata[n//2:n],inval,pos+(n//2))
+        else:
+            return (pos+(n//2))
+
+length = 1000000
+listA = [np.random.randint(0,length) for i in range(length)]
+listini = []
+listini.append(listA[0])
+for i in range(length-1):
+    insertpos = bisection(listini,listA[i+1],0)
+    listini.insert(insertpos,listA[i+1])
+#    print('%2d %2d' % (listA[i+1], insertpos), listini)
+print(listini[0:10])
+print(listini[len(listini)-10:])
