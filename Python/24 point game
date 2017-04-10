@@ -1,3 +1,9 @@
+"""
+24 points with simple operations (+,-,*,/)
+Since we only have 4 input data and limited choice of operations, 
+the time complexity in this code is not seriously considered.
+"""
+
 import numpy as np
 import itertools
 
